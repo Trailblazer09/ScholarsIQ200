@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "WebFetch(domain:ai-sdk.dev)",
+      "WebFetch(domain:upstash.com)",
+      "Bash(npm install *)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Quiz me with 2 questions on Newtons laws of motion.\"}]}]}' --max-time 50)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Search the web for the latest news about NASA Artemis mission in 2026.\"}]}]}' --max-time 50)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Search the web for latest NASA Artemis news.\"}]}]}' --max-time 50)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Quiz me with 2 questions on Newtons laws of motion.\"}]}]}' --max-time 55)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Search the web for the latest news about the NASA Artemis mission.\"}]}]}' --max-time 55)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Use web search to find the latest news about the NASA Artemis mission.\"}]}]}' --max-time 55)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"What is the current weather in Tokyo? Search the web.\"}]}]}' --max-time 40)",
+      "Bash(:)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"id\":\"1\",\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"text\":\"Search the web: who won the most recent F1 race?\"}]}]}' --max-time 40)",
+      "Bash(npx tsx *)",
+      "Bash(grep -oE '\"delta\":\"[^\"]*\"$')",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(npm run *)",
+      "WebSearch",
+      "WebFetch(domain:www.framer.com)"
+    ]
+  }
+}

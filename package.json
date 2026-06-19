@@ -1,0 +1,45 @@
+{
+  "name": "scholarsiq200",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ScholarsIQ200 — a multimodal AI tutor with RAG and tool-calling, built with Next.js, the Vercel AI SDK and Groq.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "ingest": "tsx scripts/ingest.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/groq": "^3.0.42",
+    "@ai-sdk/react": "^3.0.210",
+    "@upstash/vector": "^1.2.3",
+    "ai": "^6.0.208",
+    "framer-motion": "^12.40.0",
+    "highlight.js": "^11.11.1",
+    "html2canvas-pro": "^2.0.4",
+    "jspdf": "^4.2.1",
+    "katex": "^0.17.0",
+    "lucide-react": "^1.21.0",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-markdown": "^10.1.0",
+    "rehype-highlight": "^7.0.2",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "dotenv": "^17.4.2",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
