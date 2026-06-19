@@ -6,8 +6,6 @@
 
 A **multimodal chatbot** with **Retrieval-Augmented Generation (RAG)** and **tool-calling**, built for the Ed-Tech domain. Ask questions in text or images, get answers grounded in a course knowledge base, search the live web, and test yourself with AI-generated interactive quizzes.
 
-Built with **Next.js**, the **Vercel AI SDK**, and **Groq**. 
-
 
 ---
 
@@ -15,34 +13,35 @@ Built with **Next.js**, the **Vercel AI SDK**, and **Groq**.
 
 | Capability | How it works |
 |---|---|
-| 🖼️ **Multimodal input** | Type a question and/or upload an image (a photo of a problem, a diagram, handwriting). A vision-capable Llama 4 model reasons over both. |
+| 🖼️ **Multimodal input** | Speak/type a question and/or upload an image (a photo of a problem, a diagram, handwriting). |
 | 🎙️ **Voice input** | Tap the mic to dictate your question. The recorded audio is transcribed by Groq Whisper (`whisper-large-v3-turbo`). |
-| 📚 **RAG** | Each question retrieves relevant passages from a vector knowledge base (Upstash Vector) and grounds the answer in them — with visible, citable **source cards**. |
-| 🔍 **Tool-calling — web search** | The model can call a `searchWeb` tool (Tavily) for current information beyond the course material. |
-| 🧩 **Generative UI — quizzes** | The model can call a `createQuiz` tool; the app renders an **interactive multiple-choice quiz** with instant feedback and scoring. |
+| 📚 **RAG** | Each question retrieves relevant passages from a vector knowledge base (Upstash Vector) and grounds the answer in them. |
+| 🔍 **Tool-calling (web search)** | The model can call a `searchWeb` tool (Tavily) for current information beyond the course material. |
+| 🧩 **Generative UI (quizzes)** | The model can call a `createQuiz` tool; the app renders an **interactive multiple-choice quiz** with instant feedback and scoring. |
 | 🎨 **Polished UI** | Streaming responses, Markdown + code highlighting, image previews, tool-activity chips, light/dark mode, fully responsive. |
+| ⬇️ **Export Chat As PDF** | Download the entire conversation as PDF in just 1-click. |
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-                    ┌──────────────────────────────────────────┐
+                    ┌────────────────────────────────────────────┐
    Browser  ───────▶│  Next.js App Router (React 19)            │
-   (chat UI,        │  • useChat (Vercel AI SDK)                │
-    image upload)   │  • streaming, image previews, quizzes     │
-                    └───────────────┬──────────────────────────┘
+   (chat UI,        │  • useChat (Vercel AI SDK)                 │
+    image upload)   │  • streaming, image previews, quizzes      │
+                    └───────────────┬────────────────────────────┘
                                     │  POST /api/chat (serverless)
                                     ▼
-                    ┌──────────────────────────────────────────┐
-                    │  Route handler                            │
-                    │  1. Retrieve context  ──▶ Upstash Vector  │  ← RAG
+                    ┌────────────────────────────────────────────┐
+                    │  Route handler                             │
+                    │  1. Retrieve context  ──▶ Upstash Vector   │  ← RAG
                     │  2. streamText (Groq) — vision or tool     │
                     │     model chosen by whether an image is in │
                     │     the request                            │
-                    │  3. Tools: searchWeb (Tavily), createQuiz │  ← tool-calling
-                    │  4. Stream text + sources + tool results  │
-                    └──────────────────────────────────────────┘
+                    │  3. Tools: searchWeb (Tavily), createQuiz  │  ← tool-calling
+                    │  4. Stream text + sources + tool results   │
+                    └────────────────────────────────────────────┘
 ```
 
 Everything runs **serverless**. RAG sources are streamed to the client as a custom data part; tool results are streamed and rendered as rich components.
@@ -166,6 +165,9 @@ Your chatbot is now live at `https://<your-project>.vercel.app`.
 
 The sample knowledge base covers: photosynthesis, Newton's laws, the Pythagorean theorem, neural networks, and the water cycle. Add your own `.md` files to `/data` and re-run `npm run ingest`.
 
+6. **PDF Export**
+   Tap the download icon to export the live chat.
+
 ---
 
 ## 🔧 How RAG works here
@@ -183,8 +185,3 @@ The sample knowledge base covers: photosynthesis, Newton's laws, the Pythagorean
 - Quiz quality depends on the model; questions are model-authored.
 - Free-tier rate limits apply (Groq, Upstash, Tavily).
 
----
-
-## 📄 License
-
-MIT
