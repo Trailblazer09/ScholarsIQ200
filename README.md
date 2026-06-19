@@ -1,10 +1,13 @@
-# 🎓 ScholarsIQ200 — Multimodal AI Tutor
+<img width="959" height="500" alt="image" src="https://github.com/user-attachments/assets/7c16fcba-676b-4f47-bc51-9f1426953557" />
+
+<h1 align="center">
+  <u><a href="https://scholars-iq-200.vercel.app/"><ins>ScholarsIQ200<ins></a>🎓</u>
+</h1>
 
 A **multimodal chatbot** with **Retrieval-Augmented Generation (RAG)** and **tool-calling**, built for the Ed-Tech domain. Ask questions in text or images, get answers grounded in a course knowledge base, search the live web, and test yourself with AI-generated interactive quizzes.
 
-Built with **Next.js**, the **Vercel AI SDK**, and **Groq** — fully serverless and deployable to Vercel in minutes.
+Built with **Next.js**, the **Vercel AI SDK**, and **Groq**. 
 
-> **Live demo:** _add your Vercel URL here after deploying_
 
 ---
 
@@ -13,7 +16,7 @@ Built with **Next.js**, the **Vercel AI SDK**, and **Groq** — fully serverless
 | Capability | How it works |
 |---|---|
 | 🖼️ **Multimodal input** | Type a question and/or upload an image (a photo of a problem, a diagram, handwriting). A vision-capable Llama 4 model reasons over both. |
-| 🎙️ **Voice input** | Tap the mic to dictate your question — recorded audio is transcribed by Groq Whisper (`whisper-large-v3-turbo`). |
+| 🎙️ **Voice input** | Tap the mic to dictate your question. The recorded audio is transcribed by Groq Whisper (`whisper-large-v3-turbo`). |
 | 📚 **RAG** | Each question retrieves relevant passages from a vector knowledge base (Upstash Vector) and grounds the answer in them — with visible, citable **source cards**. |
 | 🔍 **Tool-calling — web search** | The model can call a `searchWeb` tool (Tavily) for current information beyond the course material. |
 | 🧩 **Generative UI — quizzes** | The model can call a `createQuiz` tool; the app renders an **interactive multiple-choice quiz** with instant feedback and scoring. |
@@ -42,7 +45,7 @@ Built with **Next.js**, the **Vercel AI SDK**, and **Groq** — fully serverless
                     └──────────────────────────────────────────┘
 ```
 
-Everything runs **serverless** — no always-on server. RAG sources are streamed to the client as a custom data part; tool results are streamed and rendered as rich components.
+Everything runs **serverless**. RAG sources are streamed to the client as a custom data part; tool results are streamed and rendered as rich components.
 
 ---
 
@@ -184,4 +187,4 @@ The sample knowledge base covers: photosynthesis, Newton's laws, the Pythagorean
 
 ## 📄 License
 
-MIT — free to use and adapt.
+MIT
