@@ -25,6 +25,13 @@ export default function Page() {
     transport: new DefaultChatTransport({ api: "/api/chat" }),
   });
 
+  const chatError =
+    typeof error === "string"
+      ? error
+      : error && typeof error === "object" && "message" in error
+      ? (error as { message?: string }).message ?? "Something went wrong. Please try again."
+      : "Something went wrong. Please try again.";
+
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [pending, setPending] = useState<{ text: string; files: File[] } | null>(
@@ -235,7 +242,7 @@ export default function Page() {
               ))}
               {error && (
                 <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-300">
-                  Something went wrong. Please try again.
+                  {chatError}
                 </p>
               )}
             </div>

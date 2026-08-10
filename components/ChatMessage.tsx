@@ -67,7 +67,12 @@ export function ChatMessage({
           }
         >
           {parts.map((part, i) => (
-            <PartView key={i} part={part} isUser={isUser} />
+            <PartView
+              key={i}
+              part={part}
+              isUser={isUser}
+              isStreaming={isStreaming}
+            />
           ))}
 
           {/* Thinking indicator before any content arrives */}
@@ -90,12 +95,19 @@ export function ChatMessage({
   );
 }
 
-function PartView({ part, isUser }: { part: AnyPart; isUser: boolean }) {
+function PartView({ part, isUser, isStreaming }: { part: AnyPart; isUser: boolean; isStreaming: boolean }) {
   if (!part) return null;
 
   // Plain text
   if (part.type === "text") {
     if (!part.text?.trim()) return null;
+    if (!isUser && isStreaming) {
+      return (
+        <p className="whitespace-pre-wrap text-[0.95rem] leading-relaxed">
+          {part.text}
+        </p>
+      );
+    }
     return isUser ? (
       <p className="whitespace-pre-wrap text-[0.95rem] leading-relaxed">
         {part.text}

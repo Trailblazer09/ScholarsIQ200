@@ -20,5 +20,5 @@ export const groq = createGroq({
  * RAG works with both because retrieved context is injected into the system
  * prompt rather than fetched via a tool.
  */
-export const VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+export const VISION_MODEL = "qwen/qwen3.6-27b";
 export const TOOL_MODEL = "openai/gpt-oss-120b";

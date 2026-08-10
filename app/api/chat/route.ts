@@ -40,6 +40,32 @@ function hasImage(messages: UIMessage[]): boolean {
   );
 }
 
+function getFriendlyAIError(error: unknown): string | undefined {
+  if (!error || typeof error !== "object") return undefined;
+  const err = error as Record<string, unknown>;
+  const rawMessage =
+    typeof err.message === "string"
+      ? err.message
+      : typeof err.error === "object" && err.error !== null && typeof (err.error as any).message === "string"
+      ? (err.error as any).message
+      : typeof err.responseBody === "string"
+      ? err.responseBody
+      : typeof err.data === "object" && err.data !== null && typeof (err.data as any)?.error?.message === "string"
+      ? (err.data as any).error.message
+      : undefined;
+
+  if (typeof rawMessage === "string") {
+    if (/does not exist|do not have access|model_not_found|access denied|permission/i.test(rawMessage)) {
+      return "Image search is unavailable because your Groq account does not have access to the configured vision model. Update `lib/groq.ts` to a supported multimodal model or enable vision access for your Groq API key.";
+    }
+    if (/Groq API key is missing|GROQ_API_KEY|API key is missing/i.test(rawMessage) || err.name === "AI_LoadAPIKeyError") {
+      return "Groq API key is missing or invalid. Set `GROQ_API_KEY` in `.env.local` and restart the app.";
+    }
+  }
+
+  return undefined;
+}
+
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
   const query = lastUserText(messages);
@@ -79,7 +105,10 @@ export async function POST(req: Request) {
     },
     onError: (error) => {
       console.error("[chat] stream error:", error);
-      return "Sorry, something went wrong while generating a response. Please try again.";
+      return (
+        getFriendlyAIError(error) ??
+        "Sorry, something went wrong while generating a response. Please try again."
+      );
     },
   });
 
