@@ -24,6 +24,96 @@ A **multimodal chatbot** with **Retrieval-Augmented Generation (RAG)** and **too
 ---
 
 ## 🏗️ Architecture
+```mermaid
+flowchart TD
+
+subgraph group_client["Client Experience"]
+  node_workspace["Tutor chat workspace<br/>Client UI"]
+  node_voice["Voice input control<br/>Client control"]
+  node_renderer["Conversation message renderer<br/>Client renderer"]
+  node_sources["Retrieved‑source cards<br/>Client component"]
+  node_webresults["Web‑result cards<br/>Client component"]
+  node_quiz["Interactive quiz card<br/>Client component"]
+end
+
+subgraph group_chat["Chat Orchestration"]
+  node_chatendpoint["Streaming chat endpoint<br/>API endpoint"]
+  node_prompt["Grounded tutor prompt builder<br/>[prompts.ts]"]
+  node_groqrouter["Groq model router<br/>[groq.ts]"]
+  node_tools["AI tool catalogue<br/>Tool registry"]
+  node_transcribe["Speech transcription endpoint<br/>API endpoint"]
+end
+
+subgraph group_retrieval["Retrieval and Tools"]
+  node_vectorretrieve["Course‑passage retrieval<br/>Retrieval service"]
+  node_tavilyadapter["Tavily search adapter<br/>[tavily.ts]"]
+end
+
+subgraph group_provisioning["Knowledge Provisioning"]
+  node_corpus["Course Markdown corpus<br/>Knowledge source"]
+  node_ingest["Knowledge‑base ingestion CLI<br/>[ingest.ts]"]
+end
+
+subgraph group_external["External Systems"]
+  node_learner(("Learner/browser<br/>External actor"))
+  node_upstash[("Upstash Vector<br/>External vector index")]
+  node_tavily["Tavily Search API<br/>External search API"]
+  node_groqapi["Groq API<br/>External AI API"]
+  node_operator(("Developer/operator<br/>External actor"))
+end
+
+node_learner -->|"submits content"| node_workspace
+node_workspace -->|"sends messages"| node_chatendpoint
+node_workspace -->|"renders messages"| node_renderer
+node_learner -->|"records input"| node_voice
+node_voice -->|"sends audio"| node_transcribe
+node_transcribe -->|"transcribes speech"| node_groqapi
+node_chatendpoint -->|"retrieves passages"| node_vectorretrieve
+node_vectorretrieve -->|"reads passages"| node_upstash
+node_chatendpoint -->|"builds prompt"| node_prompt
+node_chatendpoint -->|"routes inference"| node_groqrouter
+node_groqrouter -->|"calls model"| node_groqapi
+node_chatendpoint -.->|"registers tools"| node_tools
+node_tools -->|"executes search"| node_tavilyadapter
+node_tavilyadapter -->|"searches web"| node_tavily
+node_chatendpoint -->|"streams response"| node_workspace
+node_renderer -->|"renders sources"| node_sources
+node_renderer -->|"renders web results"| node_webresults
+node_renderer -->|"renders quiz"| node_quiz
+node_operator -->|"starts ingestion"| node_ingest
+node_ingest -->|"reads documents"| node_corpus
+node_ingest -->|"upserts chunks"| node_upstash
+
+click node_workspace "https://github.com/trailblazer09/scholarsiq200/blob/main/app/page.tsx"
+click node_voice "https://github.com/trailblazer09/scholarsiq200/blob/main/components/VoiceButton.tsx"
+click node_renderer "https://github.com/trailblazer09/scholarsiq200/blob/main/components/ChatMessage.tsx"
+click node_sources "https://github.com/trailblazer09/scholarsiq200/blob/main/components/SourceCards.tsx"
+click node_webresults "https://github.com/trailblazer09/scholarsiq200/blob/main/components/WebResults.tsx"
+click node_quiz "https://github.com/trailblazer09/scholarsiq200/blob/main/components/QuizCard.tsx"
+click node_chatendpoint "https://github.com/trailblazer09/scholarsiq200/blob/main/app/api/chat/route.ts"
+click node_prompt "https://github.com/trailblazer09/scholarsiq200/blob/main/lib/prompts.ts"
+click node_groqrouter "https://github.com/trailblazer09/scholarsiq200/blob/main/lib/groq.ts"
+click node_tools "https://github.com/trailblazer09/scholarsiq200/blob/main/lib/tools.ts"
+click node_transcribe "https://github.com/trailblazer09/scholarsiq200/blob/main/app/api/transcribe/route.ts"
+click node_vectorretrieve "https://github.com/trailblazer09/scholarsiq200/blob/main/lib/vector.ts"
+click node_tavilyadapter "https://github.com/trailblazer09/scholarsiq200/blob/main/lib/tavily.ts"
+click node_corpus "https://github.com/trailblazer09/scholarsiq200/tree/main/data"
+click node_ingest "https://github.com/trailblazer09/scholarsiq200/blob/main/scripts/ingest.ts"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_workspace,node_voice,node_renderer,node_sources,node_webresults,node_quiz toneBlue
+class node_chatendpoint,node_prompt,node_groqrouter,node_tools,node_transcribe toneAmber
+class node_vectorretrieve,node_tavilyadapter toneMint
+class node_corpus,node_ingest toneRose
+class node_learner,node_upstash,node_tavily,node_groqapi,node_operator toneIndigo
+```
+---
 
 ```
                     ┌────────────────────────────────────────────┐
